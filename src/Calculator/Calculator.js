@@ -1,14 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../Button/Button';
 import axios from 'axios';
 import './Calculator.css';
 
-function Calculator() {
+function Calculator({updated, setUpdated}) {
   const [value, setValue] = useState('0');
   const [prevValue, setPrevValue] = useState(null);
   const [operator, setOperator] = useState(null);
-  const [total, setTotal] = useState('0');
 
+  const addCalculation = (calc) => {
+    axios({
+      method: 'POST',
+      url: '/calculations',
+      data: {
+        newCalculation: calc
+      }          
+    }).then(response => {
+      console.log('Response.data', response.data)
+      setPrevValue("0");
+      setValue("0");
+      setUpdated(!updated);
+    }).catch(error => {
+      console.log('Error in GET:', error);
+    });
+  }
 
   const handleClick = (content) => () => {
     const num = parseFloat(value);
@@ -55,32 +70,26 @@ function Calculator() {
         return;
       }
       if (operator === "÷") {
-        setTotal((prevValue / parseFloat(value)).toString());
+        let total = ((prevValue / parseFloat(value)).toString());
+        addCalculation((prevValue + " " + operator + " " + value + " " + "=" + " " + total).toString());   
       }
       else if (operator === "x") {
-        setTotal((prevValue * parseFloat(value)).toString());
+        let total = ((prevValue * parseFloat(value)).toString());
+        addCalculation((prevValue + " " + operator + " " + value + " " + "=" + " " + total).toString());   
       }
       else if (operator === "+") {
-        setTotal((prevValue + parseFloat(value)).toString());
+        let total = ((prevValue + parseFloat(value)).toString());
+        addCalculation((prevValue + " " + operator + " " + value + " " + "=" + " " + total).toString());   
       }
       else if (operator === "-") {
-        setTotal((prevValue - parseFloat(value)).toString());
+        let total = ((prevValue - parseFloat(value)).toString());
+        addCalculation((prevValue + " " + operator + " " + value + " " + "=" + " " + total).toString());   
       }
-      axios({
-        method: 'POST',
-        url: '/calculations',
-        data: (prevValue, operator, value, "=", total).toString()
-      }).then(response => {
-        console.log('Response.data', response.data)
-      }).catch(error => {
-        console.log('Error in GET:', error);
-      });
-      setPrevValue("0");
-      setValue("0");
       return;
     }
     setValue((parseFloat(num + content)).toString());
   }
+
   return (
     <div className="calculator">
       <div className="output">
