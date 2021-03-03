@@ -15,7 +15,7 @@ app.get('/calculations', (req, res) => {
 
 app.post('/calculations', (req, res) => {
   console.log(req.body);
-  calculationsArray.push(req.body);
+  calculationsArray.unshift(req.body);
   res.sendStatus(201);
 }); // end /calculations POST
 

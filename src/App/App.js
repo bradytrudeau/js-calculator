@@ -24,7 +24,7 @@ function App() {
     <div className="App">
       <Calculator updated={updated} setUpdated={setUpdated}/>
       <div className="History">
-        {calculations.map((calculation, i) => 
+        {calculations.slice(0, 10).map((calculation, i) => 
           <div
             key={i}
             calculation={calculation}
