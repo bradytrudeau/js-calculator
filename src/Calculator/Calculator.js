@@ -4,10 +4,12 @@ import axios from 'axios';
 import './Calculator.css';
 
 function Calculator({updated, setUpdated}) {
+  // Initializing state
   const [value, setValue] = useState('0');
   const [prevValue, setPrevValue] = useState(null);
   const [operator, setOperator] = useState(null);
 
+  // Submits a new calculation to the server
   const addCalculation = (calc) => {
     axios({
       method: 'POST',
@@ -16,15 +18,16 @@ function Calculator({updated, setUpdated}) {
         newCalculation: calc
       }          
     }).then(response => {
-      console.log('Response.data', response.data)
       setPrevValue("0");
       setValue("0");
       setUpdated(!updated);
-    }).catch(error => {
-      console.log('Error in GET:', error);
+    }).catch(err => {
+      console.log('Error in POST:', err);
     });
   }
 
+  // Handles the click of each button and runs conditionals
+  // to check what the operator is and perform the correct calculations
   const handleClick = (content) => () => {
     const num = parseFloat(value);
     if (content === "AC") {
@@ -39,6 +42,13 @@ function Calculator({updated, setUpdated}) {
     }
     if (content === "+/-") {
       setValue((num * -1).toString());
+      return;
+    }
+    if (content === ".") {
+      if (value.includes(".")) {
+        return;
+      }
+      setValue(value + ".");
       return;
     }
     if (content === "÷") {
@@ -87,34 +97,39 @@ function Calculator({updated, setUpdated}) {
       }
       return;
     }
-    setValue((parseFloat(num + content)).toString());
-  }
+    if (value[value.length - 1] === ".") {
+      setValue(value + content);
+    }
+    else {    
+      setValue((parseFloat(num + content)).toString());
+    }
+  };
 
   return (
     <div className="calculator">
       <div className="output">
-        {value}
+        <p className="output-text">{value}</p>
       </div>
       <div className="buttons">
-        <Button onButtonPress={handleClick} content="AC"></Button>
-        <Button onButtonPress={handleClick} content="DEL"></Button>
-        <Button onButtonPress={handleClick} content="+/-"></Button>
-        <Button onButtonPress={handleClick} content="÷"></Button>
-        <Button onButtonPress={handleClick} content="7"></Button>
-        <Button onButtonPress={handleClick} content="8"></Button>
-        <Button onButtonPress={handleClick} content="9"></Button>
-        <Button onButtonPress={handleClick} content="x"></Button>
-        <Button onButtonPress={handleClick} content="4"></Button>
-        <Button onButtonPress={handleClick} content="5"></Button>
-        <Button onButtonPress={handleClick} content="6"></Button>
-        <Button onButtonPress={handleClick} content="-"></Button>
-        <Button onButtonPress={handleClick} content="1"></Button>
-        <Button onButtonPress={handleClick} content="2"></Button>
-        <Button onButtonPress={handleClick} content="3"></Button>
-        <Button onButtonPress={handleClick} content="+"></Button>
+        <Button onButtonPress={handleClick} content="AC" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="DEL" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="+/-" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="÷" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="7" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="8" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="9" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="x" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="4" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="5" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="6" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="-" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="1" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="2" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="3" type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="+" type="single-key"></Button>
         <Button onButtonPress={handleClick} content="0" type="double-key">0</Button>
-        <Button onButtonPress={handleClick} content="."></Button>
-        <Button onButtonPress={handleClick} content="="></Button>
+        <Button onButtonPress={handleClick} content="." type="single-key"></Button>
+        <Button onButtonPress={handleClick} content="=" type="single-key"></Button>
       </div>
     </div>
   );

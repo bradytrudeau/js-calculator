@@ -5,32 +5,35 @@ import axios from 'axios';
 
 
 function App() {
+  // Initializing state
   const [calculations, setCalculations] = useState([]);
   const [updated, setUpdated] = useState(false);
-
+  // GETs the existing calculations on the server
   useEffect(() => {
     axios({
       method: 'GET',
       url: '/calculations'
     }).then(response =>{
-      console.log('GET response:',response.data)
       setCalculations(response.data);
     }).catch(err =>{
-      console.log(err);
+      console.log('Error in GET', err);
     });
     }, [updated]);
 
   return (
     <div className="App">
       <Calculator updated={updated} setUpdated={setUpdated}/>
-      <div className="History">
+      <h2>Calculations:</h2>
+      <div className="history-display">
+        {/* Only displays last 10 calculations performed */}
         {calculations.slice(0, 10).map((calculation, i) => 
-          <div
+          <h4
+            className="history"
             key={i}
             calculation={calculation}
           >
             {calculation.newCalculation}
-          </div>
+          </h4>
         )}
       </div>
     </div>

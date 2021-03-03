@@ -19,10 +19,20 @@ body {
   margin-top: -300px;
 }
 
-button {
-  width: 75px;
-  height: 75px;
-  font-size: 20px;
-  background-color: #ffffff;
-  cursor: pointer;
+@keyframes calculations {
+  0%   {color: #4BD8AA;}
+  25%  {color: #9F43D0;}
+  50%  {color: #F47879;}
+  75%  {color: #F59C04;}
+  100% {color: #000000;}
+}
+
+.history {
+
+}
+
+.history-display {
+  width: 100%;
+  height: 100%;
+  animation: calculations 1s infinite alternate;
 }
