@@ -7,7 +7,7 @@ let config = {};
 
 if (process.env.DATABASE_URL) {
   const params = url.parse(process.env.DATABASE_URL);
-  const auth = params.auth.split(':');
+  const auth = params.auth ? params.auth.split(':') : [null, null];
 
   config = {
     user: auth[0],
