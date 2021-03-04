@@ -3,15 +3,9 @@ const Pool = pg.Pool;
 require('dotenv').config();
 const url = require('url');
 
-config = {
-  host: 'localhost',
-  port: process.env.PGPORT, 
-  database: process.env.PGDATABASE, 
-  max: 10,
-  idleTimeoutMillis: 30000, 
-};
-
-const pool = new Pool(config);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+});
 
 pool.on('connect', (client) => {
     console.log('pg connected');
