@@ -6,7 +6,6 @@ require('dotenv').config();
 // Setup app
 const app = express();
 
-app.use(express.static("build"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -38,6 +37,8 @@ app.post('/calculations', (req, res) => {
           res.sendStatus(500);
       });
 }); // End POST
+
+app.use(express.static("build"));
 
 // Setup port to listen for requests
 const port = process.env.PORT || 5000;
