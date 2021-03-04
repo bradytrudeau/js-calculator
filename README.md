@@ -10,6 +10,14 @@ To run this app, make sure you have the following installed on your computer:
 
 - Node.js
 - Nodemon
+- Postgres
+
+## Database Setup
+
+- Create a new database called `js-calculator`
+- Run the SQL Query outlined in the database.sql file
+- Create a .env file and enter PGPORT & PGDATABASE information
+- Note: If you would like to use a different database name, update the database name in `server/pool.js`
 
 ## Installation
 
@@ -23,6 +31,7 @@ To run this app, make sure you have the following installed on your computer:
 - Node
 - Express
 - React
+- PostgreSQL
 
 ## Support
 If you have suggestions or issues, please email me at [bradytrudeau@gmail.com](www.google.com)

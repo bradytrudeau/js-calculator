@@ -26,13 +26,13 @@ function App() {
       <h2>Calculations:</h2>
       <div className="history-display">
         {/* Only displays last 10 calculations performed */}
-        {calculations.slice(0, 10).map((calculation, i) => 
+        {calculations.map((calculation, i) => 
           <h4
             className="history"
             key={i}
             calculation={calculation}
           >
-            {calculation.newCalculation}
+            {calculation.all_calculations}
           </h4>
         )}
       </div>
