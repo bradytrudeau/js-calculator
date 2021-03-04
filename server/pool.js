@@ -1,16 +1,34 @@
 const pg = require('pg');
-const Pool = pg.Pool;
-require('dotenv').config();
+const url = require('url');
 
-config = {
-  host: 'localhost',
-  port: process.env.PGPORT, 
-  database: process.env.PGDATABASE, 
-  max: 10,
-  idleTimeoutMillis: 30000, 
-};
+let config = {};
 
-const pool = new Pool(config);
+if (process.env.DATABASE_URL) {
+  const params = url.parse(process.env.DATABASE_URL);
+  const auth = params.auth.split(':');
+
+  config = {
+    user: auth[0],
+    password: auth[1],
+    host: params.hostname,
+    port: params.port,
+    database: params.pathname.split('/')[1],
+    ssl: { rejectUnauthorized: false },
+    max: 10, 
+    idleTimeoutMillis: 30000, 
+  };
+} else {
+  config = {
+    host: 'localhost', 
+    port: 5432, 
+    database: 'js-calculator', 
+    max: 10, 
+    idleTimeoutMillis: 30000, 
+  };
+}
+
+// this creates the pool that will be shared by all other modules
+const pool = new pg.Pool(config);
 
 pool.on('connect', (client) => {
     console.log('pg connected');
